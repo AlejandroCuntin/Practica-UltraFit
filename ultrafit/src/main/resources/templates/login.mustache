@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+</header>
+
+<main>
+    <section>
+        <h2>Member Login</h2>
+
+        <form action="/login" method="post">
+
+            <div class="formulario_unidad">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+
+            <div class="formulario_unidad">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        {{#error}}
+            <p style="color:red; text-align:center; margin-top:10px;">
+                Invalid username or password.
+            </p>
+        {{/error}}
+
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="#" id="logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section>
+        <h2>Welcome back!</h2>
+
+        <div class="Tarifas">
+
+            <article class="Panel">
+                <h3>Weekly Classes</h3>
+                <p class="precio">5</p>
+            </article>
+
+            <article class="Panel">
+                <h3>Calories Burned</h3>
+                <p class="precio">3200 kcal</p>
+            </article>
+
+            <article class="Panel">
+                <h3>Club Access</h3>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=UltraFitAccess" alt="QR Access">
+            </article>
+
+        </div>
+    </section>
+
+    <!-- RESERVATIONS LIST -->
+    <section>
+        <h3>Your Reservations</h3>
+
+        <ul>
+            {{#reservations}}
+                <li>
+                    <strong>{{date}}</strong> - {{time}} - {{level}}
+
+                    <a href="/reservations/edit?id={{id}}">
+                        <button>Edit</button>
+                    </a>
+
+                    <form action="/reservations/delete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {{/reservations}}
+
+            {{^reservations}}
+                <p>No reservations yet.</p>
+            {{/reservations}}
+        </ul>
+    </section>
+
+    <!-- CREATE RESERVATION -->
+    <section>
+        <h3>Create Reservation</h3>
+
+        <form action="/reservations/create" method="post" onsubmit="return validateReservationForm()">
+
+
+            <input type="number" name="memberId" placeholder="Member ID" required>
+            <input type="number" name="trainerId" placeholder="Trainer ID" required>
+
+            <input type="date" name="date" required>
+            <input type="time" name="time" required>
+
+            <select name="level" required>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+            </select>
+
+            <button type="submit">Create</button>
+
+        </form>
+    </section>
+
+</main>
+
+<script src="/dashboard.js"></script>
+</body>
+</html>

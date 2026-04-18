@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Reservation | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+</header>
+
+<main>
+
+    <section>
+        <h2>Edit Reservation</h2>
+
+        <form action="/reservations/update" method="post">
+
+            <input type="hidden" name="id" value="{{reservation.id}}">
+            <input type="hidden" name="memberId" value="{{reservation.memberId}}">
+            <input type="hidden" name="trainerId" value="{{reservation.trainerId}}">
+
+            <label>Date</label>
+            <input type="date" name="date" value="{{reservation.date}}" required>
+
+            <label>Time</label>
+            <input type="time" name="time" value="{{reservation.time}}" required>
+
+            <label>Level</label>
+            <select name="level">
+                <option {{#isBeginner}}selected{{/isBeginner}}>Beginner</option>
+                <option {{#isIntermediate}}selected{{/isIntermediate}}>Intermediate</option>
+                <option {{#isAdvanced}}selected{{/isAdvanced}}>Advanced</option>
+            </select>
+
+            <button type="submit">Update</button>
+
+        </form>
+
+        <a href="/dashboard">
+            <button style="margin-top:20px;">Back</button>
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+</html>
