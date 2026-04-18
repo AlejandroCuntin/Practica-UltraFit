@@ -19,57 +19,84 @@
             <li><a href="#clases">Clases</a></li>
             <li><a href="#ubicacion">Ubicación</a></li>
             <li><a href="#pedirinformacion">Pedir Información</a></li>
-            <li><a href="/login">Iniciar sesión</a></li>
+            
+        {{#isLoggedIn}}
+            <li><a href="/dashboard">Mi Cuenta</a></li>
+            <li><a href="/members">Members</a></li>
+            <li><a href="/trainers">Trainers</a></li>
+            <li><a href="/logout">Cerrar sesión</a></li>
+        {{/isLoggedIn}}
+
+            {{^isLoggedIn}}
+                <li><a href="/login">Iniciar sesión</a></li>
+            {{/isLoggedIn}}
         </ul>
     </nav>
 </header>
 
 <main>
 
-    <!-- INICIO -->
     <section id="inicio">
-        <h2>Bienvenidos a UltraFit</h2>
-        <p>El mejor gimnasio del país. Empieza hoy tu cambio con nosotros.</p>
+        <h2>BIENVENIDOS A ULTRAFIT</h2>
+        <p>Centros por toda españa. Empieza YA</p>
 
         <a href="#precios">
             <button>Unirse ahora</button>
         </a>
 
-        <a href="/login">
-            <button>Ya eres Miembro? Iniciar</button>
-        </a>
+        {{#isLoggedIn}}
+            <a href="/dashboard">
+                <button>Mi Cuenta</button>
+            </a>
+        {{/isLoggedIn}}
+        
+        {{^isLoggedIn}}
+            <a href="/login">
+                <button>Ya eres Miembro? Iniciar</button>
+            </a>
+        {{/isLoggedIn}}
     </section>
 
-    <!-- PRECIOS -->
-    <section id="precios">
-        <h2>Elige tu plan</h2>
+    <!-- the pricing section -->
+<section id="precios">
+        <h2>PLANES DISPONIBLES</h2>
 
         <div class="Tarifas">
 
             <article class="Panel Precio Basico">
-                <h3>Plan Básico</h3>
+                <h3>PLAN BASICO</h3>
                 <p class="precio">30€/mes</p>
                 <ul>
                     <li>Acceso al gimnasio</li>
                     <li>Horario 8:00 - 22:00</li>
                     <li>Sin piscina</li>
                 </ul>
-                <button>Elegir plan</button>
+                {{#isLoggedIn}}
+                    <a href="/dashboard"><button>Cambiar plan</button></a>
+                {{/isLoggedIn}}
+                {{^isLoggedIn}}
+                    <a href="/login"><button>Elegir plan</button></a>
+                {{/isLoggedIn}}
             </article>
 
             <article class="Panel Precio Pro">
-                <h3>Plan Pro</h3>
+                <h3>PLAN PRO</h3>
                 <p class="precio">50€/mes</p>
                 <ul>
                     <li>Acceso al gimnasio</li>
                     <li>Horario 8:00 - 22:00</li>
                     <li>Acceso a piscina</li>
                 </ul>
-                <button>Elegir plan</button>
+                {{#isLoggedIn}}
+                    <a href="/dashboard"><button>Cambiar plan</button></a>
+                {{/isLoggedIn}}
+                {{^isLoggedIn}}
+                    <a href="/login"><button>Elegir plan</button></a>
+                {{/isLoggedIn}}
             </article>
 
             <article class="Panel Precio Premium">
-                <h3>Plan Premium</h3>
+                <h3>PLAN PREMIUM</h3>
                 <p class="precio">80€/mes</p>
                 <ul>
                     <li>Acceso al gimnasio</li>
@@ -77,19 +104,58 @@
                     <li>Piscina incluida</li>
                     <li>SPA y masajes</li>
                 </ul>
-                <button>Elegir plan</button>
+                {{#isLoggedIn}}
+                    <a href="/dashboard"><button>Cambiar plan</button></a>
+                {{/isLoggedIn}}
+                {{^isLoggedIn}}
+                    <a href="/login"><button>Elegir plan</button></a>
+                {{/isLoggedIn}}
             </article>
 
         </div>
     </section>
 
-    <!-- CLASES -->
-    <section id="clases">
+    <!-- the clases that we have -->
+<section id="clases">
         <div class="seccion-interior">
-            <div class="servicios-cabecera">
+            <div class="servicios-cabecera" style="text-align: center; margin-bottom: 40px;">
                 <div class="seccion-etiqueta">Nuestras clases</div>
                 <h2 class="seccion-titulo">ENTRENA<br><span class="acento">SIN LÍMITES</span></h2>
-                <p class="seccion-descripcion">Aquí encontrarás las clases disponibles actualmente.</p>
+            </div>
+
+            <div class="Tarifas">
+                <article class="Panel">
+                    <h3>Boxeo</h3>
+                    <p>Para gente con mucha energia.</p>
+                    {{#isLoggedIn}}
+                        <a href="/dashboard"><button>Book our spot</button></a>
+                    {{/isLoggedIn}}
+                    {{^isLoggedIn}}
+                        <a href="/register"><button>Añadir</button></a>
+                    {{/isLoggedIn}}
+                </article>
+
+                <article class="Panel">
+                    <h3>Yoga</h3>
+                    <p>Para conectar con tu cuerpo.</p>
+                    {{#isLoggedIn}}
+                        <a href="/dashboard"><button>Book our spot</button></a>
+                    {{/isLoggedIn}}
+                    {{^isLoggedIn}}
+                        <a href="/register"><button>Añadir</button></a>
+                    {{/isLoggedIn}}
+                </article>
+
+                <article class="Panel">
+                    <h3>Gimnasio</h3>
+                    <p>Para ponerte muy fuerte.</p>
+                    {{#isLoggedIn}}
+                        <a href="/dashboard"><button>Book our spot</button></a>
+                    {{/isLoggedIn}}
+                    {{^isLoggedIn}}
+                        <a href="/register"><button>Añadir</button></a>
+                    {{/isLoggedIn}}
+                </article>
             </div>
         </div>
     </section>
@@ -104,7 +170,7 @@
         </iframe>
     </section>
 
-    <!-- FORMULARIO -->
+    <!-- FORMULARIO: Here we can just put some information-->
     <section id="pedirinformacion">
 
         <h2>Solicitar Información</h2>

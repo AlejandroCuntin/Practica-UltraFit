@@ -1,7 +1,11 @@
 package com.ultrafit.ultrafit.controller;
 
 import com.ultrafit.ultrafit.model.Reservation;
+import com.ultrafit.ultrafit.model.Trainer;
+import com.ultrafit.ultrafit.model.Member;
 import com.ultrafit.ultrafit.service.ReservationService;
+import com.ultrafit.ultrafit.service.MemberService;
+import com.ultrafit.ultrafit.service.TrainerService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -13,14 +17,29 @@ import org.springframework.web.bind.annotation.*;
 public class WebController {
 
     private final ReservationService reservationService;
+    private final MemberService memberService;
+    private final TrainerService trainerService;
 
-    public WebController(ReservationService reservationService) {
+    public WebController(ReservationService reservationService, MemberService memberService, TrainerService trainerService) {
         this.reservationService = reservationService;
+        this.memberService = memberService;
+        this.trainerService = trainerService;
     }
 
     @GetMapping("/")
-    public String index() {
+    public String index(HttpSession session, Model model) {
+        //we see if the user is in the sesion
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("isLoggedIn", true);
+        }
         return "index";
+    }
+
+    // We add this function to logout 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); // break the sesion of the server
+        return "redirect:/"; // go back to the index page
     }
 
     @GetMapping("/login")
@@ -41,14 +60,44 @@ public class WebController {
         return "redirect:/login?error=true";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(Model model, HttpSession session) {
+    @GetMapping("/register")
+    public String register(HttpSession session) {
+        // If the user is already logged in, redirect them to our dashboard
+        if (session.getAttribute("user") != null) {
+            return "redirect:/dashboard";
+        }
+        return "register";
+    }
 
-        if (session.getAttribute("user") == null) {
+    @PostMapping("/register")
+    public String doRegister(@RequestParam String username,
+                             @RequestParam String password,
+                             HttpSession session) {
+        // In a real system, we would save the user to our database here
+        // For now, we automatically log them in after "registering"
+        session.setAttribute("user", username);
+        return "redirect:/dashboard";
+    }
+
+@GetMapping("/dashboard")
+    public String dashboard(Model model, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        
+        // Redirect to the login page if the user is not authenticated
+        if (username == null) {
             return "redirect:/login";
         }
 
+        // SIMULATION: In a real scenario, fetch the member from the database using MemberService
+        // For now, we create a dummy user to display the plan on the dashboard
+        Member currentUser = new Member();
+        currentUser.setName(username);
+        currentUser.setPlan("Premium Plan"); // Setting a default plan for testing
+        
+        // Add the user object to the model so Mustache can access it
+        model.addAttribute("userMember", currentUser);
         model.addAttribute("reservations", reservationService.getAllReservations());
+        
         return "dashboard";
     }
 
@@ -121,5 +170,115 @@ public class WebController {
         model.addAttribute("success", true);
         return "index";
     }
+
+@GetMapping("/members")
+public String listMembers(Model model, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    model.addAttribute("members", memberService.getAllMembers());
+    return "members";
+}
+
+@PostMapping("/members/create")
+public String createMember(@RequestParam String name,
+                           @RequestParam String surname,
+                           @RequestParam String email,
+                           @RequestParam String phone,
+                           @RequestParam String plan,
+                           HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    Member m = new Member();
+    m.setName(name);
+    m.setSurname(surname);
+    m.setEmail(email);
+    m.setPhone(phone);
+    m.setPlan(plan);
+    memberService.createMember(m);
+    return "redirect:/members";
+}
+
+@GetMapping("/members/edit")
+public String editMember(@RequestParam Long id, Model model, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    model.addAttribute("member", memberService.getMemberById(id));
+    return "editMember";
+}
+
+@PostMapping("/members/update")
+public String updateMember(@RequestParam Long id,
+                           @RequestParam String name,
+                           @RequestParam String surname,
+                           @RequestParam String email,
+                           @RequestParam String phone,
+                           @RequestParam String plan,
+                           HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    Member m = new Member();
+    m.setId(id);
+    m.setName(name);
+    m.setSurname(surname);
+    m.setEmail(email);
+    m.setPhone(phone);
+    m.setPlan(plan);
+    memberService.updateMember(id, m);
+    return "redirect:/members";
+}
+
+@PostMapping("/members/delete")
+public String deleteMember(@RequestParam Long id, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    memberService.deleteMember(id);
+    return "redirect:/members";
+}
+
+@GetMapping("/trainers")
+public String listTrainers(Model model, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    model.addAttribute("trainers", trainerService.getAllTrainers());
+    return "trainers";
+}
+
+@PostMapping("/trainers/create")
+public String createTrainer(@RequestParam String name,
+                            @RequestParam String specialty,
+                            @RequestParam int experienceYears,
+                            HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    Trainer t = new Trainer();
+    t.setName(name);
+    t.setSpecialty(specialty);
+    t.setExperienceYears(experienceYears);
+    trainerService.createTrainer(t);
+    return "redirect:/trainers";
+}
+
+@GetMapping("/trainers/edit")
+public String editTrainer(@RequestParam Long id, Model model, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    model.addAttribute("trainer", trainerService.getTrainerById(id));
+    return "editTrainer";
+}
+
+@PostMapping("/trainers/update")
+public String updateTrainer(@RequestParam Long id,
+                            @RequestParam String name,
+                            @RequestParam String specialty,
+                            @RequestParam int experienceYears,
+                            HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    Trainer t = new Trainer();
+    t.setId(id);
+    t.setName(name);
+    t.setSpecialty(specialty);
+    t.setExperienceYears(experienceYears);
+    trainerService.updateTrainer(id, t);
+    return "redirect:/trainers";
+}
+
+@PostMapping("/trainers/delete")
+public String deleteTrainer(@RequestParam Long id, HttpSession session) {
+    if (session.getAttribute("user") == null) return "redirect:/login";
+    trainerService.deleteTrainer(id);
+    return "redirect:/trainers";
+}
 
 }

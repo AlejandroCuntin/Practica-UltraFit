@@ -12,6 +12,11 @@
     <div id="logo">UltraFit</div>
     <nav>
         <ul>
+            <li><a href="/#inicio">Inicio</a></li>
+            <li><a href="/#precios">Precios</a></li>
+            <li><a href="/#clases">Clases</a></li>
+            <li><a href="/#ubicacion">Ubicación</a></li>
+            <li><a href="/#pedirinformacion">Pedir Información</a></li>
             <li><a href="#" id="logout">Logout</a></li>
         </ul>
     </nav>
@@ -20,9 +25,18 @@
 <main>
 
     <section>
-        <h2>Welcome back!</h2>
+        <h2>HOLA DE NUEVO, {{userMember.name}}!</h2>
 
-        <div class="Tarifas">
+    <div class="Tarifas">
+
+            <article class="Panel" style="border: 2px solid #db5f1c;">
+                <h3>Mi Plan Actual</h3>
+                <p class="precio" style="font-size: 20px;">{{userMember.plan}}</p>
+                <p>Estado: <span style="color: green; font-weight: bold;">Activo</span></p>
+                <a href="/#precios">
+                    <button style="background-color: #333; margin-top: 10px;">Mejorar / Cambiar</button>
+                </a>
+            </article>
 
             <article class="Panel">
                 <h3>Weekly Classes</h3>
@@ -36,13 +50,12 @@
 
             <article class="Panel">
                 <h3>Club Access</h3>
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=UltraFitAccess" alt="QR Access">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=UltraFitAccess_{{userMember.name}}" alt="QR Access">
             </article>
 
         </div>
     </section>
 
-    <!-- RESERVATIONS LIST -->
     <section>
         <h3>Your Reservations</h3>
 
@@ -68,12 +81,10 @@
         </ul>
     </section>
 
-    <!-- CREATE RESERVATION -->
     <section>
         <h3>Create Reservation</h3>
 
         <form action="/reservations/create" method="post" onsubmit="return validateReservationForm()">
-
 
             <input type="number" name="memberId" placeholder="Member ID" required>
             <input type="number" name="trainerId" placeholder="Trainer ID" required>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Members | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/members">Members</a></li>
+            <li><a href="/trainers">Trainers</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section>
+        <h2>Members</h2>
+
+        <ul>
+            {{#members}}
+                <li>
+                    <strong>{{name}} {{surname}}</strong> — {{email}} — {{phone}} — {{plan}}
+
+                    <a href="/members/edit?id={{id}}">
+                        <button>Edit</button>
+                    </a>
+
+                    <form action="/members/delete" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </li>
+            {{/members}}
+
+            {{^members}}
+                <p>No members yet.</p>
+            {{/members}}
+        </ul>
+    </section>
+
+    <section>
+        <h3>Create Member</h3>
+
+        <form action="/members/create" method="post">
+
+            <div class="formulario_fila">
+                <div class="formulario_unidad">
+                    <label>Name</label>
+                    <input type="text" name="name" placeholder="Name" required>
+                </div>
+                <div class="formulario_unidad">
+                    <label>Surname</label>
+                    <input type="text" name="surname" placeholder="Surname" required>
+                </div>
+            </div>
+
+            <div class="formulario_fila">
+                <div class="formulario_unidad">
+                    <label>Email</label>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="formulario_unidad">
+                    <label>Phone</label>
+                    <input type="tel" name="phone" placeholder="Phone" required>
+                </div>
+            </div>
+
+            <div class="formulario_unidad">
+                <label>Plan</label>
+                <select name="plan" required>
+                    <option value="Basic Plan">Basic Plan</option>
+                    <option value="Pro Plan">Pro Plan</option>
+                    <option value="Premium Plan">Premium Plan</option>
+                </select>
+            </div>
+
+            <button type="submit">Create Member</button>
+
+        </form>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer_inferior">
+        <p>&copy; 2024 UltraFit. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

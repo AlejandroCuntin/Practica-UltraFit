@@ -7,17 +7,18 @@ public class Member {
     private String surname;
     private String email;
     private String phone;
-
+    // New field to store the user's current plan
+    private String plan;
     public Member() {}
 
-    public Member(Long id, String name, String surname, String email, String phone) {
+    public Member(Long id, String name, String surname, String email, String phone, String plan) {
         this.id = id;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.phone = phone;
+        this.plan = plan; // Assign the plan in the constructor
     }
-
     public Long getId() {
         return id;
     }
@@ -56,5 +57,14 @@ public class Member {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    // Getter and Setter for the plan
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 }

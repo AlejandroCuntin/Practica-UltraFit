@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Member | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/members">Members</a></li>
+            <li><a href="/trainers">Trainers</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section>
+        <h2>Edit Member</h2>
+
+        <form action="/members/update" method="post">
+
+            <input type="hidden" name="id" value="{{member.id}}">
+
+            <div class="formulario_fila">
+                <div class="formulario_unidad">
+                    <label>Name</label>
+                    <input type="text" name="name" value="{{member.name}}" required>
+                </div>
+                <div class="formulario_unidad">
+                    <label>Surname</label>
+                    <input type="text" name="surname" value="{{member.surname}}" required>
+                </div>
+            </div>
+
+            <div class="formulario_fila">
+                <div class="formulario_unidad">
+                    <label>Email</label>
+                    <input type="email" name="email" value="{{member.email}}" required>
+                </div>
+                <div class="formulario_unidad">
+                    <label>Phone</label>
+                    <input type="tel" name="phone" value="{{member.phone}}" required>
+                </div>
+            </div>
+
+            <div class="formulario_unidad">
+                <label>Plan</label>
+                <select name="plan" required>
+                    <option value="Basic Plan">Basic Plan</option>
+                    <option value="Pro Plan">Pro Plan</option>
+                    <option value="Premium Plan">Premium Plan</option>
+                </select>
+            </div>
+
+            <button type="submit">Update Member</button>
+
+        </form>
+
+        <a href="/members">
+            <button style="margin-top:20px;">Back</button>
+        </a>
+
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer_inferior">
+        <p>&copy; 2024 UltraFit. All rights reserved.</p>
+    </div>
+</footer>
+
+</body>
+</html>

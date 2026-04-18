@@ -16,6 +16,9 @@
       "name": "POST Create Member",
       "request": {
         "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/members",
         "body": {
           "mode": "raw",
@@ -27,6 +30,9 @@
       "name": "PUT Update Member",
       "request": {
         "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/members/1",
         "body": {
           "mode": "raw",
@@ -38,6 +44,9 @@
       "name": "PATCH Member",
       "request": {
         "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/members/1",
         "body": {
           "mode": "raw",
@@ -62,6 +71,9 @@
       "name": "POST Create Trainer",
       "request": {
         "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/trainers",
         "body": {
           "mode": "raw",
@@ -73,6 +85,9 @@
       "name": "PUT Update Trainer",
       "request": {
         "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/trainers/1",
         "body": {
           "mode": "raw",
@@ -84,6 +99,9 @@
       "name": "PATCH Trainer",
       "request": {
         "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/trainers/1",
         "body": {
           "mode": "raw",
@@ -104,10 +122,45 @@
       "name": "POST Create Reservation",
       "request": {
         "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
         "url": "http://localhost:8080/api/reservations",
         "body": {
           "mode": "raw",
           "raw": "{\"memberId\":1,\"trainerId\":1,\"date\":\"2026-04-20\",\"time\":\"10:00\",\"level\":\"Beginner\"}"
+        }
+      }
+    },
+        {
+  "name": "GET Reservation by ID",
+  "request": { "method": "GET", "url": "http://localhost:8080/api/reservations/1" }
+    },
+    {
+    "name": "PUT Update Reservation",
+    "request": {
+      "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/reservations/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"memberId\":1,\"trainerId\":1,\"date\":\"2026-05-01\",\"time\":\"11:00\",\"level\":\"Intermediate\"}"
+        }
+      }
+    },
+    {
+      "name": "PATCH Reservation",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/reservations/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"level\":\"Advanced\"}"
         }
       }
     },

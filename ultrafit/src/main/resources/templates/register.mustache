@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Join Us | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+</header>
+
+<main>
+    <section>
+        <h2>CREA TU CUENTA</h2>
+
+        <form action="/register" method="post">
+            <div class="formulario_unidad">
+                <label>Usuario</label>
+                <input type="text" name="username" placeholder="Elige un nombre de usuario" required>
+            </div>
+
+            <div class="formulario_unidad">
+                <label>Contraseña</label>
+                <input type="password" name="password" placeholder="Crea tu contraseña" required>
+            </div>
+
+            <button type="submit">Register Now</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <p>Ya tienes una cuenta? <a href="/login" style="color: #FF6600; text-decoration: none;">Logueate aqui</a></p>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>
