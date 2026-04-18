@@ -8,6 +8,7 @@ public class Reservation {
     private String date;
     private String time;
     private String level;
+    private String username;
 
     public Reservation() {}
 
@@ -67,5 +68,12 @@ public class Reservation {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+    public String getUsername() {
+    return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

@@ -49,12 +49,14 @@ public class WebController {
 
     @PostMapping("/login")
     public String doLogin(@RequestParam String username,
-                          @RequestParam String password,
-                          HttpSession session) {
+                      @RequestParam String password,
+                      HttpSession session) {
 
+        // Hardcoded credentials for Part I — no database yet.
+        // In Part II this will be replaced with a real user lookup.
         if ("user".equals(username) && "1234".equals(password)) {
-            session.setAttribute("user", username);
-            return "redirect:/dashboard";
+        session.setAttribute("user", username);
+        return "redirect:/dashboard";
         }
 
         return "redirect:/login?error=true";
@@ -71,10 +73,10 @@ public class WebController {
 
     @PostMapping("/register")
     public String doRegister(@RequestParam String username,
-                             @RequestParam String password,
-                             HttpSession session) {
-        // In a real system, we would save the user to our database here
-        // For now, we automatically log them in after "registering"
+                         @RequestParam String password,
+                         HttpSession session) {
+        // In Part I, registration only creates a session.
+        // Persistent storage will be added in Part II with a database.
         session.setAttribute("user", username);
         return "redirect:/dashboard";
     }
@@ -96,17 +98,18 @@ public class WebController {
         
         // Add the user object to the model so Mustache can access it
         model.addAttribute("userMember", currentUser);
-        model.addAttribute("reservations", reservationService.getAllReservations());
+        model.addAttribute("reservations", reservationService.getReservationsByUsername(username));
         
         return "dashboard";
     }
 
     @PostMapping("/reservations/create")
     public String createReservation(@RequestParam Long memberId,
-                                    @RequestParam Long trainerId,
-                                    @RequestParam String date,
-                                    @RequestParam String time,
-                                    @RequestParam String level) {
+                                @RequestParam Long trainerId,
+                                @RequestParam String date,
+                                @RequestParam String time,
+                                @RequestParam String level,
+                                HttpSession session) {
 
         Reservation r = new Reservation();
         r.setMemberId(memberId);
@@ -114,6 +117,7 @@ public class WebController {
         r.setDate(date);
         r.setTime(time);
         r.setLevel(level);
+        r.setUsername((String) session.getAttribute("user")); // <- esto es lo nuevo
 
         reservationService.createReservation(r);
         return "redirect:/dashboard";

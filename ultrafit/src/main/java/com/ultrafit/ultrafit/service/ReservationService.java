@@ -51,4 +51,10 @@ public class ReservationService {
     public void deleteReservation(Long id) {
         reservations.remove(id);
     }
+
+    public List<Reservation> getReservationsByUsername(String username) {
+    return reservations.values().stream()
+            .filter(r -> username.equals(r.getUsername()))
+            .collect(java.util.stream.Collectors.toList());
+    }
 }
