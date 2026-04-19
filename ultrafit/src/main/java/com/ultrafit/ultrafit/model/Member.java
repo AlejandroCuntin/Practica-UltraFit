@@ -2,23 +2,23 @@ package com.ultrafit.ultrafit.model;
 
 public class Member {
 
-    private Long id;
-    private String name;
-    private String surname;
-    private String email;
-    private String phone;
-    // New field to store the user's current plan
-    private String plan;
-    public Member() {}
+    private Long id; //identifier of the socio, Long because can be null
+    private String name; //name of the socio
+    private String surname; //appelido of the socio
+    private String email; //email of the socio
+    private String phone; //phone of the socio
+    private String plan; //plan of membresia contratado (Basic Plan, Pro and Premium)
+    public Member() {} //we create the empty constructor for Spring MVC
 
     public Member(Long id, String name, String surname, String email, String phone, String plan) {
-        this.id = id;
+        this.id = id; //the id etc etc
         this.name = name;
         this.surname = surname;
         this.email = email;
-        this.phone = phone;
+        this.phone = phone; //we asign the phone
         this.plan = plan; // Assign the plan in the constructor
     }
+    //We need of course all the getters and the setters for libreria JSON to convert an object
     public Long getId() {
         return id;
     }
@@ -59,7 +59,6 @@ public class Member {
         this.phone = phone;
     }
 
-    // Getter and Setter for the plan
     public String getPlan() {
         return plan;
     }
