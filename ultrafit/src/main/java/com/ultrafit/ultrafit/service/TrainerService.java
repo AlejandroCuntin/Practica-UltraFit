@@ -7,7 +7,7 @@ import java.util.*;
 
 @Service
 public class TrainerService {
-
+    //we create the HashMap to save the trainers in it
     private final Map<Long, Trainer> trainers = new HashMap<>();
     private Long nextId = 1L;
 

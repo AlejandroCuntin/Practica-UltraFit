@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class WebController {
-
+    //we need to crete the 3 variables of the services.
     private final ReservationService reservationService;
     private final MemberService memberService;
     private final TrainerService trainerService;
