@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="/#inicio">Inicio</a></li>
+            <li><a href="/#precios">Precios</a></li>
+            <li><a href="/#clases">Clases</a></li>
+            <li><a href="/#ubicacion">Ubicación</a></li>
+            <li><a href="/#pedirinformacion">Pedir Información</a></li>
+
+            {{#isLoggedIn}}
+                <li><a href="/dashboard">Mi Cuenta</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            {{/isLoggedIn}}
+
+            {{^isLoggedIn}}
+                <li><a href="/login">Iniciar sesión</a></li>
+            {{/isLoggedIn}}
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section class="dashboard-hero">
+        <h2>HOLA DE NUEVO, <span class="dashboard-username">{{userMember.name}}</span>!</h2>
+        <p class="dashboard-subtitle">Bienvenido a tu panel de control</p>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="dashboard-grid">
+
+            <article class="dashboard-card plan-card">
+                <div class="dashboard-card-icon"></div>
+                <h3>Mi Plan Actual</h3>
+                <p class="dashboard-card-value">{{userMember.plan}}</p>
+                <p class="dashboard-card-status">Estado: <span class="status-active">Activo</span></p>
+                <a href="/#precios">
+                    <button class="btn-outline">Mejorar / Cambiar</button>
+                </a>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon"></div>
+                <h3>Clases Semanales</h3>
+                <p class="dashboard-card-value">5</p>
+                <p class="dashboard-card-label">esta semana</p>
+            </article>
+
+            <article class="dashboard-card">
+                <div class="dashboard-card-icon"></div>
+                <h3>Calorías Quemadas</h3>
+                <p class="dashboard-card-value">3.200</p>
+                <p class="dashboard-card-label">kcal este mes</p>
+            </article>
+
+            <article class="dashboard-card qr-card">
+                <h3>Club Access</h3>
+                <img
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=UltraFitAccess_{{userMember.name}}"
+                    alt="QR de acceso al club">
+                <p class="dashboard-card-label">Muestra este QR en recepción</p>
+            </article>
+
+        </div>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h3>Tus Reservas</h3>
+        </div>
+
+        {{#reservations}}
+        <div class="reservation-row">
+            <div class="reservation-info">
+                <span class="reservation-date">{{date}}</span>
+                <span class="reservation-time">{{time}}</span>
+                <span class="reservation-level level-{{level}}">{{level}}</span>
+            </div>
+            <div class="reservation-actions">
+                <a href="/reservations/edit?id={{id}}">
+                <button class="btn-edit">Editar</button>
+                </a>
+                <form action="/reservations/delete" method="post">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button type="submit" class="btn-delete">Eliminar</button>
+                </form>
+            </div>
+        </div>
+        {{/reservations}}
+
+        {{^reservations}}
+        <div class="empty-state">
+            <p>No tienes reservas todavía. ¡Crea una abajo!</p>
+        </div>
+        {{/reservations}}
+    </section>
+
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h3>Nueva Reserva</h3>
+        </div>
+
+        <div class="form-card">
+            <form action="/reservations/create" method="post">
+
+                <input type="hidden" name="memberId" value="1">
+
+                <div class="formulario_unidad">
+                    <label>Entrenador</label>
+                    <select name="trainerId" required>
+                        <option value="">Selecciona un entrenador</option>
+                        {{#trainers}}
+                            <option value="{{id}}">{{name}} — {{specialty}}</option>
+                        {{/trainers}}
+                    </select>
+                </div>
+
+                <div class="formulario_fila" style="margin-top: 15px;">
+                    <div class="formulario_unidad">
+                        <label>Fecha</label>
+                        <input type="date" name="date" required>
+                    </div>
+                    <div class="formulario_unidad">
+                        <label>Hora</label>
+                        <input type="time" name="time" required>
+                    </div>
+                </div>
+
+                <div class="formulario_unidad" style="margin-top: 15px;">
+                    <label>Nivel</label>
+                    <select name="level" required>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <button type="submit" style="margin-top: 20px;">Crear Reserva</button>
+
+            </form>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer_inferior">
+        <p>&copy; 2024 UltraFit. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script src="/app.js"></script>
+<script src="/dashboard.js"></script>
+</body>
+</html>
