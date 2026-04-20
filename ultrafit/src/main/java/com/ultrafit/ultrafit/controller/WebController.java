@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class WebController {
-    //we need to crete the 3 variables of the services.
+
     private final ReservationService reservationService;
     private final MemberService memberService;
     private final TrainerService trainerService;
@@ -28,43 +28,41 @@ public class WebController {
 
     @GetMapping("/")
     public String index(HttpSession session, Model model) {
-        //we see if the user is in the sesion
         if (session.getAttribute("user") != null) {
             model.addAttribute("isLoggedIn", true);
         }
         return "index";
     }
 
-    // We add this function to logout 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); // break the sesion of the server
-        return "redirect:/"; // go back to the index page
+        session.invalidate();
+        return "redirect:/";
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(HttpSession session, Model model) {
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("isLoggedIn", true);
+        }
         return "login";
     }
 
     @PostMapping("/login")
     public String doLogin(@RequestParam String username,
-                      @RequestParam String password,
-                      HttpSession session) {
-
+                          @RequestParam String password,
+                          HttpSession session) {
         // Hardcoded credentials for Part I — no database yet.
         // In Part II this will be replaced with a real user lookup.
         if ("user".equals(username) && "1234".equals(password)) {
-        session.setAttribute("user", username);
-        return "redirect:/dashboard";
+            session.setAttribute("user", username);
+            return "redirect:/dashboard";
         }
-
         return "redirect:/login?error=true";
     }
 
     @GetMapping("/register")
-    public String register(HttpSession session) {
-        // If the user is already logged in, redirect them to our dashboard
+    public String register(HttpSession session, Model model) {
         if (session.getAttribute("user") != null) {
             return "redirect:/dashboard";
         }
@@ -73,19 +71,18 @@ public class WebController {
 
     @PostMapping("/register")
     public String doRegister(@RequestParam String username,
-                         @RequestParam String password,
-                         HttpSession session) {
+                             @RequestParam String password,
+                             HttpSession session) {
         // In Part I, registration only creates a session.
         // Persistent storage will be added in Part II with a database.
         session.setAttribute("user", username);
         return "redirect:/dashboard";
     }
 
-@GetMapping("/dashboard")
+    @GetMapping("/dashboard")
     public String dashboard(Model model, HttpSession session) {
         String username = (String) session.getAttribute("user");
-        
-        // Redirect to the login page if the user is not authenticated
+
         if (username == null) {
             return "redirect:/login";
         }
@@ -94,30 +91,30 @@ public class WebController {
         // For now, we create a dummy user to display the plan on the dashboard
         Member currentUser = new Member();
         currentUser.setName(username);
-        currentUser.setPlan("Premium Plan"); // Setting a default plan for testing
-        
-        // Add the user object to the model so Mustache can access it
+        currentUser.setPlan("Premium Plan");
+        model.addAttribute("members", memberService.getAllMembers());
+        model.addAttribute("trainers", trainerService.getAllTrainers());
+        model.addAttribute("isLoggedIn", true);
         model.addAttribute("userMember", currentUser);
         model.addAttribute("reservations", reservationService.getReservationsByUsername(username));
-        
+
         return "dashboard";
     }
 
     @PostMapping("/reservations/create")
     public String createReservation(@RequestParam Long memberId,
-                                @RequestParam Long trainerId,
-                                @RequestParam String date,
-                                @RequestParam String time,
-                                @RequestParam String level,
-                                HttpSession session) {
-
+                                    @RequestParam Long trainerId,
+                                    @RequestParam String date,
+                                    @RequestParam String time,
+                                    @RequestParam String level,
+                                    HttpSession session) {
         Reservation r = new Reservation();
         r.setMemberId(memberId);
         r.setTrainerId(trainerId);
         r.setDate(date);
         r.setTime(time);
         r.setLevel(level);
-        r.setUsername((String) session.getAttribute("user")); // <- esto es lo nuevo
+        r.setUsername((String) session.getAttribute("user"));
 
         reservationService.createReservation(r);
         return "redirect:/dashboard";
@@ -130,30 +127,37 @@ public class WebController {
     }
 
     @GetMapping("/reservations/edit")
-    public String editReservation(@RequestParam Long id, Model model) {
+    public String editReservation(@RequestParam Long id, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("isLoggedIn", true);
+        }
         model.addAttribute("reservation", reservationService.getReservationById(id));
         return "editReservation";
     }
 
     @PostMapping("/reservations/update")
     public String updateReservation(@RequestParam Long id,
-                                    @RequestParam Long memberId,
-                                    @RequestParam Long trainerId,
-                                    @RequestParam String date,
-                                    @RequestParam String time,
-                                    @RequestParam String level) {
+                                @RequestParam Long memberId,
+                                @RequestParam Long trainerId,
+                                @RequestParam String date,
+                                @RequestParam String time,
+                                @RequestParam String level,
+                                HttpSession session) {
 
-        Reservation r = new Reservation();
-        r.setId(id);
-        r.setMemberId(memberId);
-        r.setTrainerId(trainerId);
-        r.setDate(date);
-        r.setTime(time);
-        r.setLevel(level);
+    Reservation r = new Reservation();
+    r.setId(id);
+    r.setMemberId(memberId);
+    r.setTrainerId(trainerId);
+    r.setDate(date);
+    r.setTime(time);
+    r.setLevel(level);
+    r.setUsername((String) session.getAttribute("user"));
 
-        reservationService.updateReservation(id, r);
-        return "redirect:/dashboard";
+            reservationService.updateReservation(id, r);
+            return "redirect:/dashboard";
     }
+
     @PostMapping("/contact")
     public String contactForm(
             @RequestParam String nombre,
@@ -162,6 +166,7 @@ public class WebController {
             @RequestParam String telefono,
             @RequestParam String centro,
             @RequestParam String mensaje,
+            HttpSession session,
             Model model) {
 
         System.out.println("Mensaje recibido:");
@@ -171,118 +176,125 @@ public class WebController {
         System.out.println(centro);
         System.out.println(mensaje);
 
+        if (session.getAttribute("user") != null) {
+            model.addAttribute("isLoggedIn", true);
+        }
         model.addAttribute("success", true);
         return "index";
     }
+/* Unnecessary since the data will be loaded from the JSON files
+    @GetMapping("/members")
+    public String listMembers(Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("members", memberService.getAllMembers());
+        return "members";
+    }
 
-@GetMapping("/members")
-public String listMembers(Model model, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    model.addAttribute("members", memberService.getAllMembers());
-    return "members";
-}
+    @PostMapping("/members/create")
+    public String createMember(@RequestParam String name,
+                               @RequestParam String surname,
+                               @RequestParam String email,
+                               @RequestParam String phone,
+                               @RequestParam String plan,
+                               HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        Member m = new Member();
+        m.setName(name);
+        m.setSurname(surname);
+        m.setEmail(email);
+        m.setPhone(phone);
+        m.setPlan(plan);
+        memberService.createMember(m);
+        return "redirect:/members";
+    }
 
-@PostMapping("/members/create")
-public String createMember(@RequestParam String name,
-                           @RequestParam String surname,
-                           @RequestParam String email,
-                           @RequestParam String phone,
-                           @RequestParam String plan,
-                           HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    Member m = new Member();
-    m.setName(name);
-    m.setSurname(surname);
-    m.setEmail(email);
-    m.setPhone(phone);
-    m.setPlan(plan);
-    memberService.createMember(m);
-    return "redirect:/members";
-}
+    @GetMapping("/members/edit")
+    public String editMember(@RequestParam Long id, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("member", memberService.getMemberById(id));
+        return "editMember";
+    }
 
-@GetMapping("/members/edit")
-public String editMember(@RequestParam Long id, Model model, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    model.addAttribute("member", memberService.getMemberById(id));
-    return "editMember";
-}
+    @PostMapping("/members/update")
+    public String updateMember(@RequestParam Long id,
+                               @RequestParam String name,
+                               @RequestParam String surname,
+                               @RequestParam String email,
+                               @RequestParam String phone,
+                               @RequestParam String plan,
+                               HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        Member m = new Member();
+        m.setId(id);
+        m.setName(name);
+        m.setSurname(surname);
+        m.setEmail(email);
+        m.setPhone(phone);
+        m.setPlan(plan);
+        memberService.updateMember(id, m);
+        return "redirect:/members";
+    }
 
-@PostMapping("/members/update")
-public String updateMember(@RequestParam Long id,
-                           @RequestParam String name,
-                           @RequestParam String surname,
-                           @RequestParam String email,
-                           @RequestParam String phone,
-                           @RequestParam String plan,
-                           HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    Member m = new Member();
-    m.setId(id);
-    m.setName(name);
-    m.setSurname(surname);
-    m.setEmail(email);
-    m.setPhone(phone);
-    m.setPlan(plan);
-    memberService.updateMember(id, m);
-    return "redirect:/members";
-}
+    @PostMapping("/members/delete")
+    public String deleteMember(@RequestParam Long id, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        memberService.deleteMember(id);
+        return "redirect:/members";
+    }
 
-@PostMapping("/members/delete")
-public String deleteMember(@RequestParam Long id, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    memberService.deleteMember(id);
-    return "redirect:/members";
-}
+    @GetMapping("/trainers")
+    public String listTrainers(Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("trainers", trainerService.getAllTrainers());
+        return "trainers";
+    }
 
-@GetMapping("/trainers")
-public String listTrainers(Model model, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    model.addAttribute("trainers", trainerService.getAllTrainers());
-    return "trainers";
-}
+    @PostMapping("/trainers/create")
+    public String createTrainer(@RequestParam String name,
+                                @RequestParam String specialty,
+                                @RequestParam int experienceYears,
+                                HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        Trainer t = new Trainer();
+        t.setName(name);
+        t.setSpecialty(specialty);
+        t.setExperienceYears(experienceYears);
+        trainerService.createTrainer(t);
+        return "redirect:/trainers";
+    }
 
-@PostMapping("/trainers/create")
-public String createTrainer(@RequestParam String name,
-                            @RequestParam String specialty,
-                            @RequestParam int experienceYears,
-                            HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    Trainer t = new Trainer();
-    t.setName(name);
-    t.setSpecialty(specialty);
-    t.setExperienceYears(experienceYears);
-    trainerService.createTrainer(t);
-    return "redirect:/trainers";
-}
+    @GetMapping("/trainers/edit")
+    public String editTrainer(@RequestParam Long id, Model model, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        model.addAttribute("isLoggedIn", true);
+        model.addAttribute("trainer", trainerService.getTrainerById(id));
+        return "editTrainer";
+    }
 
-@GetMapping("/trainers/edit")
-public String editTrainer(@RequestParam Long id, Model model, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    model.addAttribute("trainer", trainerService.getTrainerById(id));
-    return "editTrainer";
-}
+    @PostMapping("/trainers/update")
+    public String updateTrainer(@RequestParam Long id,
+                                @RequestParam String name,
+                                @RequestParam String specialty,
+                                @RequestParam int experienceYears,
+                                HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        Trainer t = new Trainer();
+        t.setId(id);
+        t.setName(name);
+        t.setSpecialty(specialty);
+        t.setExperienceYears(experienceYears);
+        trainerService.updateTrainer(id, t);
+        return "redirect:/trainers";
+    }
 
-@PostMapping("/trainers/update")
-public String updateTrainer(@RequestParam Long id,
-                            @RequestParam String name,
-                            @RequestParam String specialty,
-                            @RequestParam int experienceYears,
-                            HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    Trainer t = new Trainer();
-    t.setId(id);
-    t.setName(name);
-    t.setSpecialty(specialty);
-    t.setExperienceYears(experienceYears);
-    trainerService.updateTrainer(id, t);
-    return "redirect:/trainers";
-}
-
-@PostMapping("/trainers/delete")
-public String deleteTrainer(@RequestParam Long id, HttpSession session) {
-    if (session.getAttribute("user") == null) return "redirect:/login";
-    trainerService.deleteTrainer(id);
-    return "redirect:/trainers";
-}
-
+    @PostMapping("/trainers/delete")
+    public String deleteTrainer(@RequestParam Long id, HttpSession session) {
+        if (session.getAttribute("user") == null) return "redirect:/login";
+        trainerService.deleteTrainer(id);
+        return "redirect:/trainers";
+    }
+    */
 }

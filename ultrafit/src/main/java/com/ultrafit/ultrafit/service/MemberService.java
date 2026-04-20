@@ -1,9 +1,14 @@
 package com.ultrafit.ultrafit.service;
 
 import com.ultrafit.ultrafit.model.Member;
+import com.ultrafit.ultrafit.model.Trainer;
+
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import org.springframework.core.io.ClassPathResource;
 
 @Service
 public class MemberService {
@@ -12,7 +17,28 @@ public class MemberService {
     private final Map<Long, Member> members = new HashMap<>();//first we need to obtain the keys of the members and put it in a hasMap
     //here the id is the key
     private Long nextId = 1L; //sum that start's in 1 and increments with the creations of new members
-
+    //Load data from data.json
+    @PostConstruct
+    public void init() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            var root = mapper.readTree(new ClassPathResource("/data/data.json").getInputStream());
+            for (var node : root.get("members")) {
+                Member m = new Member(
+                    node.get("id").asLong(),
+                    node.get("name").asText(),
+                    node.get("surname").asText(),
+                    node.get("email").asText(),
+                    node.get("phone").asText(),
+                    node.get("plan").asText()
+                );
+                members.put(m.getId(), m);
+                if (m.getId() >= nextId) nextId = m.getId() + 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+}
     //This function gonna get back all the members
     public List<Member> getAllMembers() {
         return new ArrayList<>(members.values()); //Ordenated list

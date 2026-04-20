@@ -13,7 +13,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/trainers")
 public class TrainerRestController {
-    //Here we have the .java to control all the trainers
+    //We need to change this page. We dont have to get
+    //Here we have the .java to control all the trainer
     private final TrainerService trainerService;
 
     public TrainerRestController(TrainerService trainerService) {

@@ -100,7 +100,7 @@ button {
 
 button:hover {
     background-color: #cc5200;
-    color: #0000;
+    color: #ffff;
 }
 
 /* the pricing options */
@@ -252,3 +252,147 @@ footer {
     padding: 20px;
     font-size: 14px;
 }
+
+
+.dashboard-hero {
+    text-align: center;
+    padding: 40px 40px 20px;
+}
+
+.dashboard-username {
+    color: #ff6600;
+}
+
+.dashboard-subtitle {
+    color: #888;
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+.dashboard-section {
+    padding: 20px 40px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.dashboard-card {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.plan-card {
+    border-color: #ff6600;
+}
+
+.dashboard-card h3 {
+    font-size: 13px;
+    text-transform: uppercase;
+    color: #888;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.dashboard-card-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.dashboard-card-value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ff6600;
+    margin: 0;
+}
+
+.dashboard-card-label {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+.dashboard-card-status {
+    font-size: 13px;
+    color: #aaa;
+    margin: 0;
+}
+
+.status-active {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.qr-card img {
+    border-radius: 8px;
+    margin: 5px 0;
+}
+.btn-outline:hover {
+    background-color: #ff6600 !important;
+    color: #000 !important;
+}
+
+.reservation-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+}
+
+.reservation-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.reservation-date, .reservation-time {
+    font-size: 14px;
+    color: #ccc;
+}
+
+.reservation-level {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: #2a2a2a;
+    color: #ff6600;
+}
+
+.empty-state {
+    background-color: #1a1a1a;
+    border: 1px dashed #333;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+    color: #666;
+}
+
+.reservation-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.reservation-actions form {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+

@@ -9,6 +9,24 @@
 
 <header>
     <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="/#inicio">Inicio</a></li>
+            <li><a href="/#precios">Precios</a></li>
+            <li><a href="/#clases">Clases</a></li>
+            <li><a href="/#ubicacion">Ubicación</a></li>
+            <li><a href="/#pedirinformacion">Pedir Información</a></li>
+
+            {{#isLoggedIn}}
+                <li><a href="/dashboard">Mi Cuenta</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            {{/isLoggedIn}}
+
+            {{^isLoggedIn}}
+                <li><a href="/login">Iniciar sesión</a></li>
+            {{/isLoggedIn}}
+        </ul>
+    </nav>
 </header>
 
 <main>
@@ -26,7 +44,7 @@
                 <input type="password" name="password" placeholder="Crea tu contraseña" required>
             </div>
 
-            <button type="submit">Register Now</button>
+            <button type="submit">Registrate ahora</button>
         </form>
 
         <div style="text-align: center; margin-top: 20px;">

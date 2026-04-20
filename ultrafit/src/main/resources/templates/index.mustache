@@ -22,8 +22,6 @@
             
         {{#isLoggedIn}}
             <li><a href="/dashboard">Mi Cuenta</a></li>
-            <li><a href="/members">Members</a></li>
-            <li><a href="/trainers">Trainers</a></li>
             <li><a href="/logout">Cerrar sesión</a></li>
         {{/isLoggedIn}}
 
@@ -128,10 +126,10 @@
                     <h3>Boxeo</h3>
                     <p>Para gente con mucha energia.</p>
                     {{#isLoggedIn}}
-                        <a href="/dashboard"><button>Book our spot</button></a>
+                        <a href="/dashboard"><button>Añadir</button></a>
                     {{/isLoggedIn}}
                     {{^isLoggedIn}}
-                        <a href="/register"><button>Añadir</button></a>
+                        <a href="/register"><button>Reserva YA</button></a>
                     {{/isLoggedIn}}
                 </article>
 
@@ -139,21 +137,21 @@
                     <h3>Yoga</h3>
                     <p>Para conectar con tu cuerpo.</p>
                     {{#isLoggedIn}}
-                        <a href="/dashboard"><button>Book our spot</button></a>
+                        <a href="/dashboard"><button>Añadir</button></a>
                     {{/isLoggedIn}}
                     {{^isLoggedIn}}
-                        <a href="/register"><button>Añadir</button></a>
+                        <a href="/register"><button>Reserva YA</button></a>
                     {{/isLoggedIn}}
                 </article>
 
                 <article class="Panel">
                     <h3>Gimnasio</h3>
                     <p>Para ponerte muy fuerte.</p>
-                    {{#isLoggedIn}}
-                        <a href="/dashboard"><button>Book our spot</button></a>
+                    {{#isLoggedIn}} 
+                        <a href="/dashboard"><button>Añadir</button></a>
                     {{/isLoggedIn}}
                     {{^isLoggedIn}}
-                        <a href="/register"><button>Añadir</button></a>
+                        <a href="/register"><button>Reserva YA</button></a>
                     {{/isLoggedIn}}
                 </article>
             </div>
@@ -219,6 +217,10 @@
             </div>
 
             <button type="submit">Solicitar Información</button>
+
+            {{#success}}
+            <p style="color: #4caf50; font-weight: bold; text-align: center; margin-top: 15px; font-size: 16px;">Mensaje enviado correctamente.</p>
+            {{/success}}
 
         </form>
 

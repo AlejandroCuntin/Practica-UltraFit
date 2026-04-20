@@ -1,8 +1,14 @@
 package com.ultrafit.ultrafit.service;
 
 import com.ultrafit.ultrafit.model.Trainer;
-import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
+
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
+import org.springframework.core.io.ClassPathResource;
 import java.util.*;
 
 @Service
@@ -10,6 +16,26 @@ public class TrainerService {
     //we create the HashMap to save the trainers in it
     private final Map<Long, Trainer> trainers = new HashMap<>();
     private Long nextId = 1L;
+    //Load data from data.josn
+    @PostConstruct
+    public void init() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            var root = mapper.readTree(new ClassPathResource("/data/data.json").getInputStream());
+            for (var node : root.get("trainers")) {
+                Trainer t = new Trainer(
+                    node.get("id").asLong(),
+                    node.get("name").asText(),
+                    node.get("specialty").asText(),
+                    node.get("experienceYears").asInt()
+                );
+                trainers.put(t.getId(), t);
+                if (t.getId() >= nextId) nextId = t.getId() + 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Trainer> getAllTrainers() {
         return new ArrayList<>(trainers.values());
