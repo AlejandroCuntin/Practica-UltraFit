@@ -1,0 +1,172 @@
+{
+  "info": {
+    "name": "UltraFit API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Members",
+      "request": { "method": "GET", "url": "http://localhost:8080/api/members" }
+    },
+    {
+      "name": "GET Member by ID",
+      "request": { "method": "GET", "url": "http://localhost:8080/api/members/1" }
+    },
+    {
+      "name": "POST Create Member",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/members",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"John\",\"surname\":\"Doe\",\"email\":\"john@mail.com\",\"phone\":\"123456789\"}"
+        }
+      }
+    },
+    {
+      "name": "PUT Update Member",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/members/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Updated\",\"surname\":\"User\",\"email\":\"new@mail.com\",\"phone\":\"987654321\"}"
+        }
+      }
+    },
+    {
+      "name": "PATCH Member",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/members/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"patched@mail.com\"}"
+        }
+      }
+    },
+    {
+      "name": "DELETE Member",
+      "request": { "method": "DELETE", "url": "http://localhost:8080/api/members/1" }
+    },
+
+    {
+      "name": "GET All Trainers",
+      "request": { "method": "GET", "url": "http://localhost:8080/api/trainers" }
+    },
+    {
+      "name": "GET Trainer by ID",
+      "request": { "method": "GET", "url": "http://localhost:8080/api/trainers/1" }
+    },
+    {
+      "name": "POST Create Trainer",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/trainers",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Mike\",\"specialty\":\"Yoga\",\"experienceYears\":5}"
+        }
+      }
+    },
+    {
+      "name": "PUT Update Trainer",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/trainers/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Updated\",\"specialty\":\"Pilates\",\"experienceYears\":10}"
+        }
+      }
+    },
+    {
+      "name": "PATCH Trainer",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/trainers/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"specialty\":\"Crossfit\"}"
+        }
+      }
+    },
+    {
+      "name": "DELETE Trainer",
+      "request": { "method": "DELETE", "url": "http://localhost:8080/api/trainers/1" }
+    },
+
+    {
+      "name": "GET All Reservations",
+      "request": { "method": "GET", "url": "http://localhost:8080/api/reservations" }
+    },
+    {
+      "name": "POST Create Reservation",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/reservations",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"memberId\":1,\"trainerId\":1,\"date\":\"2026-04-20\",\"time\":\"10:00\",\"level\":\"Beginner\"}"
+        }
+      }
+    },
+        {
+  "name": "GET Reservation by ID",
+  "request": { "method": "GET", "url": "http://localhost:8080/api/reservations/1" }
+    },
+    {
+    "name": "PUT Update Reservation",
+    "request": {
+      "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/reservations/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"memberId\":1,\"trainerId\":1,\"date\":\"2026-05-01\",\"time\":\"11:00\",\"level\":\"Intermediate\"}"
+        }
+      }
+    },
+    {
+      "name": "PATCH Reservation",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "url": "http://localhost:8080/api/reservations/1",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"level\":\"Advanced\"}"
+        }
+      }
+    },
+    {
+      "name": "DELETE Reservation",
+      "request": { "method": "DELETE", "url": "http://localhost:8080/api/reservations/1" }
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar reserva | UltraFit</title>
+    <link rel="stylesheet" href="/estilos.css">
+</head>
+
+<body>
+
+<header>
+    <div id="logo">UltraFit</div>
+    <nav>
+        <ul>
+            <li><a href="/#inicio">Inicio</a></li>
+            <li><a href="/#precios">Precios</a></li>
+            <li><a href="/#clases">Clases</a></li>
+            <li><a href="/#ubicacion">Ubicación</a></li>
+            <li><a href="/#pedirinformacion">Pedir Información</a></li>
+
+            {{#isLoggedIn}}
+                <li><a href="/dashboard">Mi Cuenta</a></li>
+
+                <li><a href="/logout">Cerrar sesión</a></li>
+            {{/isLoggedIn}}
+
+            {{^isLoggedIn}}
+                <li><a href="/login">Iniciar sesión</a></li>
+            {{/isLoggedIn}}
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+    <section class="dashboard-section">
+        <div class="section-header">
+            <h2>Editar Reserva</h2>
+        </div>
+
+        <div class="form-card">
+            <form action="/reservations/update" method="post">
+
+                <input type="hidden" name="id" value="{{reservation.id}}">
+                <input type="hidden" name="memberId" value="{{reservation.memberId}}">
+                <input type="hidden" name="trainerId" value="{{reservation.trainerId}}">
+
+                <div class="formulario_fila">
+                    <div class="formulario_unidad">
+                        <label>Fecha</label>
+                        <input type="date" name="date" value="{{reservation.date}}" required>
+                    </div>
+                    <div class="formulario_unidad">
+                        <label>Hora</label>
+                        <input type="time" name="time" value="{{reservation.time}}" required>
+                    </div>
+                </div>
+
+                <div class="formulario_unidad" style="margin-top: 15px;">
+                    <label>Nivel</label>
+                    <select name="level" required>
+                        <option value="Beginner">Beginner</option>
+                        <option value="Intermediate">Intermediate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+
+                <button type="submit" style="margin-top: 20px;">Actualizar Reserva</button>
+
+            </form>
+
+            <a href="/dashboard">
+                <button class="btn-outline" style="margin-top: 10px; width: 100%;">Volver a la Cuenta</button>
+            </a>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <div class="footer_inferior">
+        <p>&copy; 2024 UltraFit. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>
