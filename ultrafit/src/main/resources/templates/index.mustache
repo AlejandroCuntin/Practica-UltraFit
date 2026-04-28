@@ -19,11 +19,12 @@
             <li><a href="#clases">Clases</a></li>
             <li><a href="#ubicacion">Ubicación</a></li>
             <li><a href="#pedirinformacion">Pedir Información</a></li>
+            <li><a href="/faq">Preguntas Frecuentes</a></li>
             
-        {{#isLoggedIn}}
-            <li><a href="/dashboard">Mi Cuenta</a></li>
-            <li><a href="/logout">Cerrar sesión</a></li>
-        {{/isLoggedIn}}
+            {{#isLoggedIn}}
+                <li><a href="/dashboard">Mi Cuenta</a></li>
+                <li><a href="/logout">Cerrar sesión</a></li>
+            {{/isLoggedIn}}
 
             {{^isLoggedIn}}
                 <li><a href="/login">Iniciar sesión</a></li>

@@ -1,80 +1,63 @@
 package com.ultrafit.ultrafit.service;
 
 import com.ultrafit.ultrafit.model.Trainer;
-
-import jakarta.annotation.PostConstruct;
-
-import org.springframework.core.io.ClassPathResource;
+import com.ultrafit.ultrafit.repository.TrainerRepository;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
-import org.springframework.core.io.ClassPathResource;
-import java.util.*;
 
+import java.util.List;
+import java.util.Map;
+
+// Service layer for Trainer. Contains all business logic related to trainers.
+// Used by both WebController and TrainerRestController to avoid code duplication
 @Service
 public class TrainerService {
-    //we create the HashMap to save the trainers in it
-    private final Map<Long, Trainer> trainers = new HashMap<>();
-    private Long nextId = 1L;
-    //Load data from data.josn
-    @PostConstruct
-    public void init() {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            var root = mapper.readTree(new ClassPathResource("/data/data.json").getInputStream());
-            for (var node : root.get("trainers")) {
-                Trainer t = new Trainer(
-                    node.get("id").asLong(),
-                    node.get("name").asText(),
-                    node.get("specialty").asText(),
-                    node.get("experienceYears").asInt()
-                );
-                trainers.put(t.getId(), t);
-                if (t.getId() >= nextId) nextId = t.getId() + 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+    private final TrainerRepository trainerRepository;
+
+    public TrainerService(TrainerRepository trainerRepository) {
+        this.trainerRepository = trainerRepository;
     }
 
+    // Returns all trainers stored in the database
     public List<Trainer> getAllTrainers() {
-        return new ArrayList<>(trainers.values());
+        return trainerRepository.findAll();
     }
 
+    // Finds a trainer by their primary key. Returns null if not found
     public Trainer getTrainerById(Long id) {
-        return trainers.get(id);
+        return trainerRepository.findById(id).orElse(null);
     }
 
+    // Persists a new trainer in the database
     public Trainer createTrainer(Trainer trainer) {
-        trainer.setId(nextId++);
-        trainers.put(trainer.getId(), trainer);
-        return trainer;
+        return trainerRepository.save(trainer);
     }
 
+    // Full update: sets the ID on the incoming object and saves it, replacing all fields
     public Trainer updateTrainer(Long id, Trainer updatedTrainer) {
         updatedTrainer.setId(id);
-        trainers.put(id, updatedTrainer);
-        return updatedTrainer;
+        return trainerRepository.save(updatedTrainer);
     }
 
+    // Partial update: only modifies the fields present in the updates map
     public Trainer patchTrainer(Long id, Map<String, Object> updates) {
-        Trainer trainer = trainers.get(id);
+        Trainer trainer = trainerRepository.findById(id).orElse(null);
         if (trainer == null) return null;
-
-        if (updates.containsKey("name")) {
-            trainer.setName((String) updates.get("name"));
-        }
-        if (updates.containsKey("specialty")) {
-            trainer.setSpecialty((String) updates.get("specialty"));
-        }
-        if (updates.containsKey("experienceYears")) {
-            trainer.setExperienceYears((int) updates.get("experienceYears"));
-        }
-
-        return trainer;
+        if (updates.containsKey("name"))            trainer.setName((String) updates.get("name"));
+        if (updates.containsKey("specialty"))       trainer.setSpecialty((String) updates.get("specialty"));
+        if (updates.containsKey("experienceYears")) trainer.setExperienceYears((int) updates.get("experienceYears"));
+        return trainerRepository.save(trainer);
     }
 
+    // Deletes a trainer by ID.
+    // The reservations list is cleared first to let orphanRemoval handle
+    // the cascade deletion and avoid foreign key constraint violations in H2
     public void deleteTrainer(Long id) {
-        trainers.remove(id);
+        Trainer trainer = trainerRepository.findById(id).orElse(null);
+        if (trainer == null) return;
+        if (trainer.getReservations() != null) {
+            trainer.getReservations().clear();
+        }
+        trainerRepository.deleteById(id);
     }
 }

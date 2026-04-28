@@ -17,6 +17,7 @@
             <li><a href="/#clases">Clases</a></li>
             <li><a href="/#ubicacion">Ubicación</a></li>
             <li><a href="/#pedirinformacion">Pedir Información</a></li>
+            <li><a href="/faq">Preguntas Frecuentes</a></li>
 
             {{#isLoggedIn}}
                 <li><a href="/dashboard">Mi Cuenta</a></li>
@@ -32,18 +33,16 @@
 </header>
 
 <main>
-
     <section class="dashboard-section">
-        <div class="section-header">
-            <h2>Editar Reserva</h2>
-        </div>
+        <h2>Gestionar Reserva #{{reservation.id}}</h2>
 
-        <div class="form-card">
+        <div class="form-card" style="margin-bottom: 20px;">
+            <h3>Modificar Fecha y Hora (UPDATE)</h3>
             <form action="/reservations/update" method="post">
-
                 <input type="hidden" name="id" value="{{reservation.id}}">
                 <input type="hidden" name="memberId" value="{{reservation.memberId}}">
                 <input type="hidden" name="trainerId" value="{{reservation.trainerId}}">
+                <input type="hidden" name="level" value="{{reservation.level}}">
 
                 <div class="formulario_fila">
                     <div class="formulario_unidad">
@@ -55,26 +54,26 @@
                         <input type="time" name="time" value="{{reservation.time}}" required>
                     </div>
                 </div>
+                <button type="submit">Actualizar Cita Completa</button>
+            </form>
+        </div>
 
-                <div class="formulario_unidad" style="margin-top: 15px;">
-                    <label>Nivel</label>
+        <div class="form-card" style="border: 1px solid #ff6600;">
+            <h3 style="color: #ff6600;">Cambio de Nivel Rápido (PATCH)</h3>
+            <form action="/reservations/patch" method="post">
+                <input type="hidden" name="id" value="{{reservation.id}}">
+                <div class="formulario_unidad">
+                    <label>Nuevo Nivel de Intensidad</label>
                     <select name="level" required>
                         <option value="Beginner">Beginner</option>
                         <option value="Intermediate">Intermediate</option>
                         <option value="Advanced">Advanced</option>
                     </select>
                 </div>
-
-                <button type="submit" style="margin-top: 20px;">Actualizar Reserva</button>
-
+                <button type="submit" style="background-color: #ff6600; color: black; margin-top: 10px;">Aplicar Parche</button>
             </form>
-
-            <a href="/dashboard">
-                <button class="btn-outline" style="margin-top: 10px; width: 100%;">Volver a la Cuenta</button>
-            </a>
         </div>
     </section>
-
 </main>
 
 <footer>

@@ -2,8 +2,10 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box; /* here we put the border-box of the sizing box */
-    font-family: Arial, Helvetica, sans-serif; /* we put the font of the letters */
+    box-sizing: border-box;
+    /* here we put the border-box of the sizing box */
+    font-family: Arial, Helvetica, sans-serif;
+    /* we put the font of the letters */
 }
 
 body {
@@ -11,7 +13,8 @@ body {
     background-color: #181717;
     /* and now we put the main text color to white for readability */
     color: #ffffff;
-    line-height: 1.6; /* that's the height of the line of the texts */
+    line-height: 1.6;
+    /* that's the height of the line of the texts */
 }
 
 /* header that's is in the top of the page's */
@@ -67,9 +70,9 @@ section h2 {
 #inicio {
     /*we gonna remove the global max-width constraint to spans the entire screen */
     max-width: none;
-    margin:0;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)),
-    url("https://images.unsplash.com/photo-1558611848-73f7eb4001a1") center/cover;
+    margin: 0;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)),
+        url("https://images.unsplash.com/photo-1558611848-73f7eb4001a1") center/cover;
     color: white;
     text-align: center;
     padding: 120px 20px;
@@ -109,8 +112,9 @@ button:hover {
     gap: 80px;
     justify-content: center;
     flex-wrap: wrap;
-    align-items: stretch; /* Ensures all panels in the row stretch to the same height */
-    border:#9f9d9d;
+    align-items: stretch;
+    /* Ensures all panels in the row stretch to the same height */
+    border: #9f9d9d;
 }
 
 article.Panel {
@@ -122,8 +126,9 @@ article.Panel {
     padding: 25px;
     width: 300px;
     text-align: center;
-    box-shadow: 0 0 10px rgba(245, 240, 240, 0.1); /* shadow to make the cards pop in dark */
-    
+    box-shadow: 0 0 10px rgba(245, 240, 240, 0.1);
+    /* shadow to make the cards pop in dark */
+
     /* Turn the panel into a Flexbox column */
     display: flex;
     flex-direction: column;
@@ -131,20 +136,24 @@ article.Panel {
 
 /* This targets the anchor <a> tags that wrap our buttons inside the panel */
 article.Panel a {
-    margin-top: auto;  /* Pushes the link (and the button inside it) to the very bottom of the panel */
+    margin-top: auto;
+    /* Pushes the link (and the button inside it) to the very bottom of the panel */
     display: block;
     width: 100%;
 }
 
 article.Panel ul {
-    margin-bottom: 40px; /* Give a little space so the text doesn't touch the buttons */
+    margin-bottom: 40px;
+    /* Give a little space so the text doesn't touch the buttons */
 }
 
-article.Panel p { /* to put more margin between the bottom and the p text */
+article.Panel p {
+    /* to put more margin between the bottom and the p text */
     margin-bottom: 40px;
     color: #cccccc;
     flex-grow: 1;
 }
+
 .precio {
     font-size: 26px;
     color: #FF6600;
@@ -155,7 +164,7 @@ article.Panel p { /* to put more margin between the bottom and the p text */
 /* Class here */
 #clases {
     max-width: none;
-    margin:0;
+    margin: 0;
 
     background-color: #111;
     color: white;
@@ -163,7 +172,8 @@ article.Panel p { /* to put more margin between the bottom and the p text */
 }
 
 #clases .Panel {
-    background-color: #111; /* different black to see the cards */
+    background-color: #111;
+    /* different black to see the cards */
     border: 1px solid #5a5454;
     padding: 30px;
 }
@@ -227,7 +237,7 @@ textarea {
     border-radius: 5px;
     border: 1px solid #444;
     background-color: #333333;
-    color:#f5f1f1
+    color: #f5f1f1
 }
 
 textarea {
@@ -240,11 +250,18 @@ form button {
     width: 100%;
 }
 
-/* ===== FOOTER ===== */
 footer {
     background-color: #111;
     color: white;
     margin-top: 60px;
+}
+
+.reservation-row div[style*="display: flex"] {
+    gap: 25px !important; 
+}
+
+.btn-edit, .btn-delete {
+    margin: 0 !important;
 }
 
 .footer_inferior {
@@ -291,10 +308,28 @@ footer {
     flex-direction: column;
     align-items: center;
     gap: 8px;
+    justify-content: center;
 }
 
 .plan-card {
     border-color: #ff6600;
+}
+
+main section.dashboard-section {
+    margin-bottom: 80px !important; 
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 15px;
+}
+
+.form-alta-entrenador {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 1px solid #333; 
+}
+
+.section-header {
+    margin-bottom: 40px !important;
 }
 
 .dashboard-card h3 {
@@ -329,6 +364,8 @@ footer {
     margin: 0;
 }
 
+
+
 .status-active {
     color: #4caf50;
     font-weight: bold;
@@ -338,6 +375,7 @@ footer {
     border-radius: 8px;
     margin: 5px 0;
 }
+
 .btn-outline:hover {
     background-color: #ff6600 !important;
     color: #000 !important;
@@ -361,7 +399,8 @@ footer {
     flex-wrap: wrap;
 }
 
-.reservation-date, .reservation-time {
+.reservation-date,
+.reservation-time {
     font-size: 14px;
     color: #ccc;
 }
@@ -384,11 +423,6 @@ footer {
     color: #666;
 }
 
-.reservation-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
 
 .reservation-actions form {
     display: flex;
@@ -396,3 +430,149 @@ footer {
     padding: 0;
 }
 
+
+.reservation-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px;
+}
+
+.reservation-actions form {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+}
+
+.btn-edit,
+.btn-delete {
+    width: 100px;
+    padding: 8px 0;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+
+/* we create that for the mobile*/
+@media (max-width: 768px) {
+
+    header {
+        flex-direction: column;
+        padding: 15px 20px;
+        gap: 10px;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    /* dashboard grid: 4 columns to like aproximately 2 columns on mobile */
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* the sections also we need to change */
+    section {
+        padding: 30px 20px;
+    }
+
+    .dashboard-section {
+        padding: 15px 20px;
+    }
+
+    /* the hero also */
+    #inicio {
+        padding: 60px 20px;
+    }
+
+    #inicio h2 {
+        font-size: 30px;
+    }
+
+    #inicio p {
+        font-size: 16px;
+    }
+
+    /* the pricing cards: stack vertically */
+    .Tarifas {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    article.Panel {
+        width: 100%;
+        max-width: 350px;
+    }
+
+    /* Reservation rows: stack info and buttons vertically */
+    .reservation-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .reservation-actions {
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        flex: 1;
+        text-align: center;
+    }
+
+    /* Forms */
+    .formulario_fila {
+        flex-direction: column;
+    }
+
+    /* Entity tables: make them scrollable horizontally */
+    .entity-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    /* Map iframe */
+    #ubicacion iframe {
+        height: 250px;
+    }
+
+    /* Auth cards */
+    .auth-card {
+        padding: 25px 20px;
+    }
+}
+
+/* FAQ */
+.faq-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.faq-item {
+    background-color: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 10px;
+    padding: 25px 30px;
+}
+
+.faq-item h3 {
+    color: #ff6600;
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.faq-item p {
+    color: #ccc;
+    font-size: 15px;
+}

@@ -1,60 +1,88 @@
 package com.ultrafit.ultrafit.service;
 
+import com.ultrafit.ultrafit.model.Member;
 import com.ultrafit.ultrafit.model.Reservation;
+import com.ultrafit.ultrafit.model.Trainer;
+import com.ultrafit.ultrafit.repository.MemberRepository;
+import com.ultrafit.ultrafit.repository.ReservationRepository;
+import com.ultrafit.ultrafit.repository.TrainerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
+// Service layer for Reservation. Contains all business logic related to reservations.
+// Used by both WebController and ReservationRestController to avoid code duplication
 @Service
 public class ReservationService {
-    //we create a HashMap of reservations were the id of the reservation is the key to find it
-    private final Map<Long, Reservation> reservations = new HashMap<>();
-    private Long nextId = 1L; 
-    //to get all reservations
+
+    private final ReservationRepository reservationRepository;
+    private final MemberRepository memberRepository;
+    private final TrainerRepository trainerRepository;
+
+    public ReservationService(ReservationRepository reservationRepository,
+                              MemberRepository memberRepository,
+                              TrainerRepository trainerRepository) {
+        this.reservationRepository = reservationRepository;
+        this.memberRepository = memberRepository;
+        this.trainerRepository = trainerRepository;
+    }
+
+    // Returns all reservations stored in the database
     public List<Reservation> getAllReservations() {
-        return new ArrayList<>(reservations.values());
+        return reservationRepository.findAll();
     }
-    //to get one reservation in particular, using the id
+
+    // Finds a reservation by its primary key. Returns null if not found
     public Reservation getReservationById(Long id) {
-        return reservations.get(id);
+        return reservationRepository.findById(id).orElse(null);
     }
-    //to create a new reservation
+
+    // Creates a new reservation. Resolves the Member and Trainer entities
+    // from their IDs before persisting to satisfy the JPA relationships
     public Reservation createReservation(Reservation reservation) {
-        reservation.setId(nextId++);
-        reservations.put(reservation.getId(), reservation);
-        return reservation;
+        if (reservation.getMemberId() != null) {
+            Member m = memberRepository.findById(reservation.getMemberId()).orElse(null);
+            reservation.setMember(m);
+        }
+        if (reservation.getTrainerId() != null) {
+            Trainer t = trainerRepository.findById(reservation.getTrainerId()).orElse(null);
+            reservation.setTrainer(t);
+        }
+        return reservationRepository.save(reservation);
     }
-    //to update it
+
+    // Full update: sets the ID and resolves Member/Trainer references before saving
     public Reservation updateReservation(Long id, Reservation updatedReservation) {
         updatedReservation.setId(id);
-        reservations.put(id, updatedReservation);
-        return updatedReservation;
+        if (updatedReservation.getMemberId() != null) {
+            Member m = memberRepository.findById(updatedReservation.getMemberId()).orElse(null);
+            updatedReservation.setMember(m);
+        }
+        if (updatedReservation.getTrainerId() != null) {
+            Trainer t = trainerRepository.findById(updatedReservation.getTrainerId()).orElse(null);
+            updatedReservation.setTrainer(t);
+        }
+        return reservationRepository.save(updatedReservation);
     }
-    //and to create a partial update of the reservation. If we want to change something we are gonna use this function
+
+    // Partial update: only modifies the fields present in the updates map
     public Reservation patchReservation(Long id, Map<String, Object> updates) {
-        Reservation reservation = reservations.get(id);
-        if (reservation == null) return null;
-
-        if (updates.containsKey("date")) {
-            reservation.setDate((String) updates.get("date"));
-        }
-        if (updates.containsKey("time")) {
-            reservation.setTime((String) updates.get("time"));
-        }
-        if (updates.containsKey("level")) {
-            reservation.setLevel((String) updates.get("level"));
-        }
-
-        return reservation;
+        Reservation r = reservationRepository.findById(id).orElse(null);
+        if (r == null) return null;
+        if (updates.containsKey("date"))  r.setDate((String) updates.get("date"));
+        if (updates.containsKey("time"))  r.setTime((String) updates.get("time"));
+        if (updates.containsKey("level")) r.setLevel((String) updates.get("level"));
+        return reservationRepository.save(r);
     }
 
+    // Deletes a reservation by ID
     public void deleteReservation(Long id) {
-        reservations.remove(id);
+        reservationRepository.deleteById(id);
     }
-    //and to get the reservations from a certain member, using is name
+
+    // Returns all reservations belonging to a specific logged-in user
     public List<Reservation> getReservationsByUsername(String username) {
-    return reservations.values().stream()
-            .filter(r -> username.equals(r.getUsername()))
-            .collect(java.util.stream.Collectors.toList());
+        return reservationRepository.findByUsername(username);
     }
 }

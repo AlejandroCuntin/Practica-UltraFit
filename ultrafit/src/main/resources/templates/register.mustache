@@ -16,6 +16,7 @@
             <li><a href="/#clases">Clases</a></li>
             <li><a href="/#ubicacion">Ubicación</a></li>
             <li><a href="/#pedirinformacion">Pedir Información</a></li>
+            <li><a href="/faq">Preguntas Frecuentes</a></li>
 
             {{#isLoggedIn}}
                 <li><a href="/dashboard">Mi Cuenta</a></li>
@@ -45,6 +46,11 @@
             </div>
 
             <button type="submit">Registrate ahora</button>
+            {{#errorExists}}
+            <p style="color:#FF6600; text-align:center; margin-top:10px; font-weight:bold;">
+                Ese nombre de usuario ya está en uso. Elige otro.
+            </p>
+            {{/errorExists}}
         </form>
 
         <div style="text-align: center; margin-top: 20px;">
